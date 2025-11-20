@@ -1,8 +1,11 @@
 import { Button } from "@/components/Button";
 import { addLayout } from "@/hoc/addLayout";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 
 export default function Room() {
+  const params = useParams<{ code: string }>()
+
   return addLayout(
     <ul className="list-none w-[900px] max-w-screen">
       <li className="w-full rounded-[14px] bg-white p-6">
@@ -38,7 +41,7 @@ export default function Room() {
             <div className="mt-4">
               <p className="text-[#4A5565] mb-1">Share this code:</p>
               <div className="flex items-center gap-2">
-                <span className="px-4 py-2 bg-[#F3F4F6] text-[#59168B] text-base rounded-[10px]">JST0Z5</span>
+                <span className="px-4 py-2 bg-[#F3F4F6] text-[#59168B] text-base rounded-[10px]">{params?.code}</span>
                 <button>
                   <figure className="flex items-center gap-2 bg-[#F3E8FF] text-[#8200DB] text-base px-4 py-2 rounded-[10px]">
                     <Image
