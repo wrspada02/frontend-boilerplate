@@ -17,16 +17,18 @@ export default function Home() {
       </header>
 
       <section className="max-w-[400px] w-full mt-12">
-          <Button
-            className="bg-white text-[#59168B]"
+          <Button.Link
+            href={'/room/create'}
+            className="bg-white text-[#59168B] block"
           >
             <span>Create a Room</span>
-          </Button>
-          <Button
-            className="text-white bg-[#AD46FF] border border-solid border-[#8200DB] mt-4"
+          </Button.Link>
+          <Button.Link
+            href={'/room/join'}
+            className="text-white block bg-[#AD46FF] border border-solid border-[#8200DB] mt-4"
           >
             <span>Join a Room</span>
-          </Button>
+          </Button.Link>
       </section>
 
       <footer className="max-w-[400px] w-full p-4 mt-12 rounded-sm bg-[#6E11B080]">

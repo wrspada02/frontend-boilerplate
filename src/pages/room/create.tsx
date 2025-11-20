@@ -6,7 +6,8 @@ export default function CreateRoom() {
   return addLayout(
     <div className="max-w-[400px]">
       <header className="self-start">
-        <Button
+        <Button.Link
+          href={'/'}
           className="flex items-center pl-0"
         >
           <Image
@@ -16,7 +17,7 @@ export default function CreateRoom() {
             alt="Arrow pointing to left side meaning user can return back to home page"
           />
           <span className="ml-2">Back</span>
-        </Button>
+        </Button.Link>
       </header>
 
       <section className="bg-white rounded-[14px] p-8">
