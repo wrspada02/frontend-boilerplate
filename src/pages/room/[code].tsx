@@ -5,7 +5,6 @@ import { getToken } from "@/utils/getToken";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useState, useActionState, useEffect } from "react";
-import { z } from "zod";
 
 export default function Room() {
   const params = useParams<{ code: string }>()

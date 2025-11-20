@@ -3,7 +3,6 @@ import { CreateRoomFormState, createRoomSchema, initialCreateRoomState } from "@
 import { addLayout } from "@/hoc/addLayout";
 import Image from "next/image";
 import { useActionState } from "react";
-import { z } from "zod";
 
 export default function CreateRoom() {
   async function handleSubmitForm(
