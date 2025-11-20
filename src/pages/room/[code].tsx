@@ -2,11 +2,86 @@ import { Button } from "@/components/Button";
 import { addLayout } from "@/hoc/addLayout";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useActionState, useEffect } from "react";
+import { z } from "zod";
+
+const addMovieSchema = z.object({
+  movie_title: z
+    .string()
+    .min(1, "Movie title is required")
+    .min(2, "Movie title must be at least 2 characters")
+    .max(200, "Movie title must be less than 200 characters"),
+  year: z
+    .string()
+    .optional()
+    .refine(
+      (val) => !val || /^\d{4}$/.test(val),
+      "Year must be exactly 4 numbers"
+    ),
+});
+
+type AddMovieFormState = {
+  errors?: {
+    movie_title?: string[];
+    year?: string[];
+  };
+  values?: {
+    movie_title?: string;
+    year?: string;
+  };
+  success?: boolean;
+};
+
+const initialState: AddMovieFormState = {
+  errors: undefined,
+  values: undefined,
+  success: false,
+};
 
 export default function Room() {
   const params = useParams<{ code: string }>()
   const [isOpenMovieForm, setIsOpenMovieForm] = useState<boolean>(false)
+
+  async function handleSubmitForm(
+    prevState: AddMovieFormState,
+    formData: FormData
+  ): Promise<AddMovieFormState> {
+    const movie_title = formData.get("movie_title") as string;
+    const year = formData.get("year") as string | null;
+
+    const result = addMovieSchema.safeParse({
+      movie_title,
+      year: year || undefined,
+    });
+
+    if (!result.success) {
+      return {
+        errors: result.error.flatten().fieldErrors,
+        values: { movie_title, year: year || undefined },
+        success: false,
+      };
+    }
+
+    // TODO: Implement actual movie addition logic here
+    // For now, just return success
+    return {
+      errors: undefined,
+      values: undefined,
+      success: true,
+    };
+  }
+
+  const [state, formAction, isPending] = useActionState(
+    handleSubmitForm,
+    initialState
+  );
+
+  // Close form on successful submission
+  useEffect(() => {
+    if (state.success) {
+      setIsOpenMovieForm(false);
+    }
+  }, [state.success]);
 
   return addLayout(
     <ul className="list-none w-[900px] max-w-screen">
@@ -91,20 +166,58 @@ export default function Room() {
       </li>
       <li className="w-full rounded-[14px] bg-white p-6 mt-6">
         {isOpenMovieForm ? (
-          <form action="">
-            <label htmlFor="name" className="text-[#364153] text-base leading-6 font-normal mb-2.5 block">
+          <form action={formAction}>
+            <label htmlFor="movie_title" className="text-[#364153] text-base leading-6 font-normal mb-2.5 block">
               Movie Title *
             </label>
-            <input type="text" id="name" placeholder="e.g. Inception" className="p-4 w-full rounded-[10px] text-black border border-[#D1D5DC]" />
+            <input
+              type="text"
+              id="movie_title"
+              name="movie_title"
+              placeholder="e.g. Inception"
+              defaultValue={state.values?.movie_title || ''}
+              className={`p-4 w-full rounded-[10px] text-black border ${
+                state.errors?.movie_title
+                  ? 'border-red-500'
+                  : 'border-[#D1D5DC]'
+              }`}
+              disabled={isPending}
+            />
+            {state.errors?.movie_title && (
+              <p className="text-red-500 text-sm mt-1">
+                {state.errors.movie_title[0]}
+              </p>
+            )}
 
-            <label htmlFor="name" className="text-[#364153] text-base leading-6 font-normal mt-4 mb-2.5 block">
+            <label htmlFor="year" className="text-[#364153] text-base leading-6 font-normal mt-4 mb-2.5 block">
               Year (Optional)
             </label>
-            <input type="text" id="name" placeholder="e.g. 2010" className="p-4 w-full rounded-[10px] text-black border border-[#D1D5DC]" />
+            <input
+              type="text"
+              id="year"
+              name="year"
+              placeholder="e.g. 2010"
+              defaultValue={state.values?.year || ''}
+              className={`p-4 w-full rounded-[10px] text-black border ${
+                state.errors?.year
+                  ? 'border-red-500'
+                  : 'border-[#D1D5DC]'
+              }`}
+              disabled={isPending}
+            />
+            {state.errors?.year && (
+              <p className="text-red-500 text-sm mt-1">
+                {state.errors.year[0]}
+              </p>
+            )}
 
             <footer className="flex items-center gap-3">
-              <Button className="bg-[#9810FA] mt-6 h-[50px] text-justify py-3 px-6" type="submit">
-                Add Movie
+              <Button
+                className="bg-[#9810FA] mt-6 h-[50px] text-justify py-3 px-6"
+                type="submit"
+                disabled={isPending}
+              >
+                {isPending ? "Adding..." : "Add Movie"}
               </Button>
               <Button 
                 className="bg-[#E5E7EB] text-[#364153] max-w-[100px] mt-6 h-[50px] py-3 px-6"
@@ -112,6 +225,7 @@ export default function Room() {
                 onClick={() => {
                   setIsOpenMovieForm(false)
                 }}
+                disabled={isPending}
               >
                 Cancel
               </Button>
