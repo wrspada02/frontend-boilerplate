@@ -107,15 +107,20 @@ export default function Room() {
             </figure>
 
             {token ? null : (
-              <figure className="flex items-center gap-2">
-                <Image
-                  src={'/leave.svg'}
-                  alt="Leave icon"
-                  width={20}
-                  height={20}
-                />
-                <figcaption className="text-[#4A5565] text-base leading-6">Leave</figcaption>
-              </figure>
+              <Button.Link
+                href={'/'}
+                className="!w-fit"
+              >
+                <figure className="flex items-center gap-2">
+                  <Image
+                    src={'/leave.svg'}
+                    alt="Leave icon"
+                    width={20}
+                    height={20}
+                  />
+                  <figcaption className="text-[#4A5565] text-base leading-6">Leave</figcaption>
+                </figure>
+              </Button.Link>
             )}
           </div>
 
