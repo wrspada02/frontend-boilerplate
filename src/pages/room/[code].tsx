@@ -1,5 +1,6 @@
 import { Button } from "@/components/Button";
 import { addLayout } from "@/hoc/addLayout";
+import { getToken } from "@/utils/getToken";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useState, useActionState, useEffect } from "react";
@@ -41,6 +42,11 @@ const initialState: AddMovieFormState = {
 export default function Room() {
   const params = useParams<{ code: string }>()
   const [isOpenMovieForm, setIsOpenMovieForm] = useState<boolean>(false)
+  const [token, setToken] = useState<string | null>(null)
+
+  useEffect(() => {
+    setToken(getToken())
+  }, [])
 
   async function handleSubmitForm(
     prevState: AddMovieFormState,
@@ -87,17 +93,31 @@ export default function Room() {
     <ul className="list-none w-[900px] max-w-screen">
       <li className="w-full rounded-[14px] bg-white p-6">
         <section>
-          <figure className="flex items-center gap-2">
-            <Image 
-              src={'/movie.svg'}
-              width={20}
-              height={20}
-              alt="Movie icon"
-            />
-            <figcaption className="ml-3 text-base text-[#59168B] font-normal leading-6">
-              <h1>Movie Night Room</h1>
-            </figcaption>
-          </figure>
+          <div className="flex justify-between">
+            <figure className="flex items-center gap-2">
+              <Image 
+                src={'/movie.svg'}
+                width={20}
+                height={20}
+                alt="Movie icon"
+              />
+              <figcaption className="ml-3 text-base text-[#59168B] font-normal leading-6">
+                <h1>Movie Night Room</h1>
+              </figcaption>
+            </figure>
+
+            {token ? null : (
+              <figure className="flex items-center gap-2">
+                <Image
+                  src={'/leave.svg'}
+                  alt="Leave icon"
+                  width={20}
+                  height={20}
+                />
+                <figcaption className="text-[#4A5565] text-base leading-6">Leave</figcaption>
+              </figure>
+            )}
+          </div>
 
           <div className="flex items-center gap-2 mt-2">
             <Image 
@@ -109,9 +129,11 @@ export default function Room() {
             <span className="text-base text-[#59168B] font-normal leading-6">
               Teste da Silva
             </span>
-            <span className="text-sm text-[#8200DB] font-normal leading-6 px-2 py-0.5 rounded-sm bg-[#F3E8FF]">
-              Host
-            </span>
+            {token ? (
+              <span className="text-sm text-[#8200DB] font-normal leading-6 px-2 py-0.5 rounded-sm bg-[#F3E8FF]">
+                Host
+              </span>
+            ) : null}
           </div>
 
           <div className="flex items-center justify-between">
@@ -145,25 +167,27 @@ export default function Room() {
           </div>
         </section>
       </li>
-      <li className="w-full rounded-[14px] bg-white p-6 mt-6">
-        <section>
-          <h2 className="text-[#101828] text-base leading-6">Host Controls</h2>
+      {token ? (
+        <li className="w-full rounded-[14px] bg-white p-6 mt-6">
+          <section>
+            <h2 className="text-[#101828] text-base leading-6">Host Controls</h2>
 
-          <Button className="bg-[#9810FA] rounded-[10px] max-w-[240px] h-[50px] mt-4">
-            <figure className="flex items-center gap-2">
-              <Image
-                src={"/flag.svg"}
-                alt="Flag icon"
-                width={20}
-                height={20}
-              />
-              <figcaption className="text-white text-base font-normal leading-6">Finish & Draw Winner</figcaption>
-            </figure>
-          </Button>
+            <Button className="bg-[#9810FA] rounded-[10px] max-w-[240px] h-[50px] mt-4">
+              <figure className="flex items-center gap-2">
+                <Image
+                  src={"/flag.svg"}
+                  alt="Flag icon"
+                  width={20}
+                  height={20}
+                />
+                <figcaption className="text-white text-base font-normal leading-6">Finish & Draw Winner</figcaption>
+              </figure>
+            </Button>
 
-          <p className="text-sm text-[#4A5565] leading-5 mt-4">Lock the room and automatically draw a random winner. You must finish the room before you can leave.</p>
-        </section>
-      </li>
+            <p className="text-sm text-[#4A5565] leading-5 mt-4">Lock the room and automatically draw a random winner. You must finish the room before you can leave.</p>
+          </section>
+        </li>
+      ) : null}
       <li className="w-full rounded-[14px] bg-white p-6 mt-6">
         {isOpenMovieForm ? (
           <form action={formAction}>
