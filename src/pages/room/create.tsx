@@ -1,32 +1,9 @@
 import { Button } from "@/components/Button";
+import { CreateRoomFormState, createRoomSchema, initialCreateRoomState } from "@/constants/create";
 import { addLayout } from "@/hoc/addLayout";
 import Image from "next/image";
 import { useActionState } from "react";
 import { z } from "zod";
-
-const createRoomSchema = z.object({
-  user_name: z
-    .string()
-    .min(1, "Name is required")
-    .min(2, "Name must be at least 2 characters")
-    .max(50, "Name must be less than 50 characters"),
-});
-
-type CreateRoomFormState = {
-  errors?: {
-    user_name?: string[];
-  };
-  values?: {
-    user_name?: string;
-  };
-  success?: boolean;
-};
-
-const initialState: CreateRoomFormState = {
-  errors: undefined,
-  values: undefined,
-  success: false,
-};
 
 export default function CreateRoom() {
   async function handleSubmitForm(
@@ -56,7 +33,7 @@ export default function CreateRoom() {
 
   const [state, formAction, isPending] = useActionState(
     handleSubmitForm,
-    initialState
+    initialCreateRoomState
   );
 
   return addLayout(
