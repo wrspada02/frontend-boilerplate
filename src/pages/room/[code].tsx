@@ -194,90 +194,97 @@ export default function Room() {
         </li>
       ) : null}
       <li className="w-full rounded-[14px] bg-white p-6 mt-6">
-        {isOpenMovieForm ? (
-          <form action={formAction}>
-            <label htmlFor="movie_title" className="text-[#364153] text-base leading-6 font-normal mb-2.5 block">
-              Movie Title *
-            </label>
-            <input
-              type="text"
-              id="movie_title"
-              name="movie_title"
-              placeholder="e.g. Inception"
-              defaultValue={state.values?.movie_title || ''}
-              className={`p-4 w-full rounded-[10px] text-black border ${
-                state.errors?.movie_title
-                  ? 'border-red-500'
-                  : 'border-[#D1D5DC]'
-              }`}
-              disabled={isPending}
-            />
-            {state.errors?.movie_title && (
-              <p className="text-red-500 text-sm mt-1">
-                {state.errors.movie_title[0]}
-              </p>
-            )}
-
-            <label htmlFor="year" className="text-[#364153] text-base leading-6 font-normal mt-4 mb-2.5 block">
-              Year (Optional)
-            </label>
-            <input
-              type="text"
-              id="year"
-              name="year"
-              placeholder="e.g. 2010"
-              defaultValue={state.values?.year || ''}
-              className={`p-4 w-full rounded-[10px] text-black border ${
-                state.errors?.year
-                  ? 'border-red-500'
-                  : 'border-[#D1D5DC]'
-              }`}
-              disabled={isPending}
-            />
-            {state.errors?.year && (
-              <p className="text-red-500 text-sm mt-1">
-                {state.errors.year[0]}
-              </p>
-            )}
-
-            <footer className="flex items-center gap-3">
-              <Button
-                className="bg-[#9810FA] mt-6 h-[50px] text-justify py-3 px-6"
-                type="submit"
+        <div className="overflow-hidden">
+          {isOpenMovieForm ? (
+            <form 
+              action={formAction} 
+              className="animate-[fadeIn_0.3s_ease-in-out_forwards]"
+            >
+              <label htmlFor="movie_title" className="text-[#364153] text-base leading-6 font-normal mb-2.5 block">
+                Movie Title *
+              </label>
+              <input
+                type="text"
+                id="movie_title"
+                name="movie_title"
+                placeholder="e.g. Inception"
+                defaultValue={state.values?.movie_title || ''}
+                className={`p-4 w-full rounded-[10px] text-black border ${
+                  state.errors?.movie_title
+                    ? 'border-red-500'
+                    : 'border-[#D1D5DC]'
+                }`}
                 disabled={isPending}
-              >
-                {isPending ? "Adding..." : "Add Movie"}
-              </Button>
-              <Button 
-                className="bg-[#E5E7EB] text-[#364153] max-w-[100px] mt-6 h-[50px] py-3 px-6"
-                type="button"
-                onClick={() => {
-                  setIsOpenMovieForm(false)
-                }}
-                disabled={isPending}
-              >
-                Cancel
-              </Button>
-            </footer>
-          </form>
-        ): (
-          <Button 
-            className="bg-[#9810FA]" 
-            onClick={() => {
-              setIsOpenMovieForm(true)
-            }}
-          >
-            <figure className="flex items-center justify-center gap-2">
-              <Image
-                src={"/add.svg"}
-                alt="Add icon"
-                width={20}
-                height={20}
               />
-              <figcaption className="text-white text-base font-normal leading-6">Add a Movie</figcaption>
-            </figure>
-          </Button>
-        )}
+              {state.errors?.movie_title && (
+                <p className="text-red-500 text-sm mt-1">
+                  {state.errors.movie_title[0]}
+                </p>
+              )}
+
+              <label htmlFor="year" className="text-[#364153] text-base leading-6 font-normal mt-4 mb-2.5 block">
+                Year (Optional)
+              </label>
+              <input
+                type="text"
+                id="year"
+                name="year"
+                placeholder="e.g. 2010"
+                defaultValue={state.values?.year || ''}
+                className={`p-4 w-full rounded-[10px] text-black border ${
+                  state.errors?.year
+                    ? 'border-red-500'
+                    : 'border-[#D1D5DC]'
+                }`}
+                disabled={isPending}
+              />
+              {state.errors?.year && (
+                <p className="text-red-500 text-sm mt-1">
+                  {state.errors.year[0]}
+                </p>
+              )}
+
+              <footer className="flex items-center gap-3">
+                <Button
+                  className="bg-[#9810FA] mt-6 h-[50px] text-justify py-3 px-6"
+                  type="submit"
+                  disabled={isPending}
+                >
+                  {isPending ? "Adding..." : "Add Movie"}
+                </Button>
+                <Button 
+                  className="bg-[#E5E7EB] text-[#364153] max-w-[100px] mt-6 h-[50px] py-3 px-6"
+                  type="button"
+                  onClick={() => {
+                    setIsOpenMovieForm(false)
+                  }}
+                  disabled={isPending}
+                >
+                  Cancel
+                </Button>
+              </footer>
+            </form>
+          ): (
+            <div className="animate-[fadeIn_0.3s_ease-in-out_forwards]">
+              <Button 
+                className="bg-[#9810FA]" 
+                onClick={() => {
+                  setIsOpenMovieForm(true)
+                }}
+              >
+                <figure className="flex items-center justify-center gap-2">
+                  <Image
+                    src={"/add.svg"}
+                    alt="Add icon"
+                    width={20}
+                    height={20}
+                  />
+                  <figcaption className="text-white text-base font-normal leading-6">Add a Movie</figcaption>
+                </figure>
+              </Button>
+            </div>
+          )}
+        </div>
       </li>
       <li className="w-full rounded-[14px] bg-white p-6 mt-6">
         <h3 className="text-lg text-[#101828] leading-7 font-medium">Movies (0)</h3>
