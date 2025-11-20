@@ -1,3 +1,4 @@
+import { Button } from "@/components/Button";
 import { addLayout } from "@/hoc/addLayout";
 import Image from "next/image";
 
@@ -14,7 +15,7 @@ export default function Room() {
               alt="Movie icon"
             />
             <figcaption className="ml-3 text-base text-[#59168B] font-normal leading-6">
-              Movie Night Room
+              <h1>Movie Night Room</h1>
             </figcaption>
           </figure>
 
@@ -64,9 +65,45 @@ export default function Room() {
           </div>
         </section>
       </li>
-      <li></li>
-      <li></li>
-      <li></li>
+      <li className="w-full rounded-[14px] bg-white p-6 mt-6">
+        <section>
+          <h2 className="text-[#101828] text-base leading-6">Host Controls</h2>
+
+          <Button className="bg-[#9810FA] rounded-[10px] max-w-[240px] h-[50px] mt-4">
+            <figure className="flex items-center gap-2">
+              <Image
+                src={"/flag.svg"}
+                alt="Flag icon"
+                width={20}
+                height={20}
+              />
+              <figcaption className="text-white text-base font-normal leading-6">Finish & Draw Winner</figcaption>
+            </figure>
+          </Button>
+
+          <p className="text-sm text-[#4A5565] leading-5 mt-4">Lock the room and automatically draw a random winner. You must finish the room before you can leave.</p>
+        </section>
+      </li>
+      <li className="w-full rounded-[14px] bg-white p-6 mt-6">
+        <Button className="bg-[#9810FA]">
+          <figure className="flex items-center justify-center gap-2">
+            <Image
+              src={"/add.svg"}
+              alt="Add icon"
+              width={20}
+              height={20}
+            />
+            <figcaption className="text-white text-base font-normal leading-6">Add a Movie</figcaption>
+          </figure>
+        </Button>
+      </li>
+      <li className="w-full rounded-[14px] bg-white p-6 mt-6">
+        <h3 className="text-lg text-[#101828] leading-7 font-medium">Movies (0)</h3>
+
+        <p className="bg-[#6E11B04D] text-[#E9D4FF] h-[125px] rounded-[10px] flex items-center justify-center mt-4">
+          No movies yet. Be the first to add one!
+        </p>
+      </li>
     </ul>
   )
 }
