@@ -1,43 +1,11 @@
 import { Button } from "@/components/Button";
+import { AddMovieFormState, addMovieSchema, initialRoomIndexState } from "@/constants/[code]";
 import { addLayout } from "@/hoc/addLayout";
 import { getToken } from "@/utils/getToken";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useState, useActionState, useEffect } from "react";
 import { z } from "zod";
-
-const addMovieSchema = z.object({
-  movie_title: z
-    .string()
-    .min(1, "Movie title is required")
-    .min(2, "Movie title must be at least 2 characters")
-    .max(200, "Movie title must be less than 200 characters"),
-  year: z
-    .string()
-    .optional()
-    .refine(
-      (val) => !val || /^\d{4}$/.test(val),
-      "Year must be exactly 4 numbers"
-    ),
-});
-
-type AddMovieFormState = {
-  errors?: {
-    movie_title?: string[];
-    year?: string[];
-  };
-  values?: {
-    movie_title?: string;
-    year?: string;
-  };
-  success?: boolean;
-};
-
-const initialState: AddMovieFormState = {
-  errors: undefined,
-  values: undefined,
-  success: false,
-};
 
 export default function Room() {
   const params = useParams<{ code: string }>()
@@ -79,7 +47,7 @@ export default function Room() {
 
   const [state, formAction, isPending] = useActionState(
     handleSubmitForm,
-    initialState
+    initialRoomIndexState
   );
 
   // Close form on successful submission
