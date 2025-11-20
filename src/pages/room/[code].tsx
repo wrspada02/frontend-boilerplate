@@ -2,9 +2,11 @@ import { Button } from "@/components/Button";
 import { addLayout } from "@/hoc/addLayout";
 import Image from "next/image";
 import { useParams } from "next/navigation";
+import { useState } from "react";
 
 export default function Room() {
   const params = useParams<{ code: string }>()
+  const [isOpenMovieForm, setIsOpenMovieForm] = useState<boolean>(false)
 
   return addLayout(
     <ul className="list-none w-[900px] max-w-screen">
@@ -88,17 +90,51 @@ export default function Room() {
         </section>
       </li>
       <li className="w-full rounded-[14px] bg-white p-6 mt-6">
-        <Button className="bg-[#9810FA]">
-          <figure className="flex items-center justify-center gap-2">
-            <Image
-              src={"/add.svg"}
-              alt="Add icon"
-              width={20}
-              height={20}
-            />
-            <figcaption className="text-white text-base font-normal leading-6">Add a Movie</figcaption>
-          </figure>
-        </Button>
+        {isOpenMovieForm ? (
+          <form action="">
+            <label htmlFor="name" className="text-[#364153] text-base leading-6 font-normal mb-2.5 block">
+              Movie Title *
+            </label>
+            <input type="text" id="name" placeholder="e.g. Inception" className="p-4 w-full rounded-[10px] text-black border border-[#D1D5DC]" />
+
+            <label htmlFor="name" className="text-[#364153] text-base leading-6 font-normal mt-4 mb-2.5 block">
+              Year (Optional)
+            </label>
+            <input type="text" id="name" placeholder="e.g. 2010" className="p-4 w-full rounded-[10px] text-black border border-[#D1D5DC]" />
+
+            <footer className="flex items-center gap-3">
+              <Button className="bg-[#9810FA] mt-6 h-[50px] text-justify py-3 px-6" type="submit">
+                Add Movie
+              </Button>
+              <Button 
+                className="bg-[#E5E7EB] text-[#364153] max-w-[100px] mt-6 h-[50px] py-3 px-6"
+                type="button"
+                onClick={() => {
+                  setIsOpenMovieForm(false)
+                }}
+              >
+                Cancel
+              </Button>
+            </footer>
+          </form>
+        ): (
+          <Button 
+            className="bg-[#9810FA]" 
+            onClick={() => {
+              setIsOpenMovieForm(true)
+            }}
+          >
+            <figure className="flex items-center justify-center gap-2">
+              <Image
+                src={"/add.svg"}
+                alt="Add icon"
+                width={20}
+                height={20}
+              />
+              <figcaption className="text-white text-base font-normal leading-6">Add a Movie</figcaption>
+            </figure>
+          </Button>
+        )}
       </li>
       <li className="w-full rounded-[14px] bg-white p-6 mt-6">
         <h3 className="text-lg text-[#101828] leading-7 font-medium">Movies (0)</h3>
